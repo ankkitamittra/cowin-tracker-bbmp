@@ -7,22 +7,22 @@ const Tracker = (props) => {
     
     const [centersList, setCentersList] = useState([]);
     useEffect(() => {
-        getData();
+        setInterval(() => {
+            getData();
+        }, 300000);
+       
     }, []);
 
     const getData = async () => {
-        var today = new Date();
-        var dd = today.getDate();
-
-        var mm = today.getMonth()+1; 
-        var yyyy = today.getFullYear();
-        if(dd<10) 
-        {
+        let today = new Date();
+        let dd = today.getDate();
+        let mm = today.getMonth()+1; 
+        let yyyy = today.getFullYear();
+        if(dd<10){
             dd='0'+dd;
         } 
 
-        if(mm<10) 
-        {
+        if(mm<10){
             mm='0'+mm;
         } 
 
@@ -38,13 +38,10 @@ const Tracker = (props) => {
                 if(item.min_age_limit == 18){
                     flag = true;
                 }
-                
-                
             })
             flag && centers.push(element);
         });
         setCentersList(centers);
-        console.log(centers);
     };
 
     
@@ -61,7 +58,7 @@ const Tracker = (props) => {
             </tr>
           )
         })}
-         </tbody>
+        </tbody>
       </Table>
     </Fragment>)
      

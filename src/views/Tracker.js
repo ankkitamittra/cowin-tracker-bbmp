@@ -7,10 +7,11 @@ const Tracker = (props) => {
     
     const [centersList, setCentersList] = useState([]);
     useEffect(() => {
-        setInterval(() => {
-            getData();
-        }, 300000);
        
+        setInterval(()=>{
+            getData();
+           
+        },3000);
     }, []);
 
     const getData = async () => {
@@ -34,7 +35,8 @@ const Tracker = (props) => {
         let centers = [];
         response.forEach(element => {
             let flag = false;
-            element.sessions.forEach(item => {
+
+            element.fee_type == "Paid" && element.sessions.forEach(item => {
                 if(item.min_age_limit == 18){
                     flag = true;
                 }
@@ -44,7 +46,12 @@ const Tracker = (props) => {
         setCentersList(centers);
     };
 
-    
+    const openAlert = (capacity, name) => {
+
+        if(capacity > 0) {alert(`${name} - ${capacity}`)}
+        
+        return capacity;
+    }
 
     return (
     <Fragment>
@@ -52,9 +59,9 @@ const Tracker = (props) => {
         <tbody>
         {centersList.map(item=>{
           return(
-            <tr>
+            <tr key={item.name}>
                 <td>{item.name} <br/> {item.pincode}</td>
-                {item.sessions.map(slot=> slot.min_age_limit === 18 && (<td >{slot.date} <br/> {slot.available_capacity}</td>))}
+                {item.sessions.map((slot,index)=> slot.min_age_limit === 18 && (<td key={index} >{slot.date} <br/> {openAlert(slot.available_capacity,item.name)}</td>))}
             </tr>
           )
         })}
